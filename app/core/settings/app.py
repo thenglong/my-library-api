@@ -1,11 +1,6 @@
-import logging
-import sys
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
-from loguru import logger
 from pydantic import BaseSettings
-
-from app.core.logging import InterceptHandler
 
 
 class AppSettings(BaseSettings):
@@ -14,7 +9,7 @@ class AppSettings(BaseSettings):
     openapi_prefix: str = ""
     openapi_url: str = "/openapi.json"
     redoc_url: str = "/redoc"
-    title: str = "FastAPI example application"
+    title: str = "My Library Api Docs"
     version: str = "1.0.0"
 
     allowed_hosts: List[str] = ["*"]
