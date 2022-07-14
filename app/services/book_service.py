@@ -2,11 +2,9 @@ from fastapi import HTTPException
 from sqlalchemy import desc, asc
 from sqlalchemy.orm.session import Session
 
-from app.dto.book_schema import BookSchema, BaseBookSchema
-from app.dto.common_schema import Pagination
+from app.dto.book_dtos import BaseBookDto
+from app.dto.common_dtos import create_pagination
 from app.models.book_models import BookModel
-
-import math
 
 
 def get_all(page: int, take: int, db: Session):
@@ -19,27 +17,20 @@ def get_all(page: int, take: int, db: Session):
         .limit(take) \
         .all()
     all_book_count = query.count()
-    page_count = math.ceil(all_book_count / take)
-
-    return Pagination[BookSchema](
-        page=page,
-        items=result,
-        pageCount=page_count,
-        itemCount=all_book_count,
-        taken=take,
-        hasNext=page < all_book_count,
-        hasPrevious=page > 1
-    )
+    return create_pagination(items=result,
+                             page=page,
+                             all_items_count=all_book_count,
+                             take=take)
 
 
-def create(request: BaseBookSchema, db: Session):
+def create(request: BaseBookDto, db: Session):
     new_book = BookModel(
         title=request.title,
         language=request.language,
         country=request.country,
-        totalPages=request.totalPages,
+        page_count=request.page_count,
         description=request.description,
-        coverImageUrl=request.coverImageUrl,
+        cover_image_url=request.cover_image_url,
         author=request.author,
     )
 
@@ -58,17 +49,17 @@ def get_by_id(book_id: int, db: Session):
     return book
 
 
-def update(book_id: int, request: BaseBookSchema, db: Session):
+def update(book_id: int, request: BaseBookDto, db: Session):
     book = db.query(BookModel).get(book_id)
     if not book:
         raise HTTPException(status_code=404, detail=f"Book with id {book_id} not found")
     book.title = request.title
     book.language = request.language
     book.country = request.country
-    book.coverImageUrl = request.coverImageUrl
+    book.cover_image_url = request.cover_image_url
     book.author = request.author
     book.description = request.description
-    book.totalPages = request.totalPages
+    book.page_count = request.page_count
 
     db.commit()
     db.refresh(book)
