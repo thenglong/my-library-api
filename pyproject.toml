@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "my-library-api"
+version = "0.1.0"
+description = ""
+authors = ["Thenglong Heng <thenglongheng2k@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+fastapi = "^0.78.0"
+uvicorn = {extras = ["standard"], version = "^0.18.2"}
+SQLAlchemy = "^1.4.39"
+psycopg2 = "^2.9.3"
+python-dotenv = "^0.20.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+taskipy = "^1.10.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+dev = "uvicorn app.main:app --reload"
+start = "uvicorn app.main:app"
