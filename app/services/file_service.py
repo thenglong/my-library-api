@@ -9,7 +9,7 @@ def upload_file(u_file: UploadFile):
     filename = f"{nanoid.generate()}{extension}"
     bucket = storage.bucket()
     blob = bucket.blob(filename)
-    blob.upload_from_file(u_file.file)
+    blob.upload_from_file(file_obj=u_file.file, content_type=u_file.content_type)
     blob.make_public()
     return blob.public_url
 
