@@ -3,12 +3,12 @@ import sys
 from typing import Any, Dict, List, Tuple
 
 from loguru import logger
+from pydantic import BaseSettings
 
 from app.core.logging import InterceptHandler
-from app.core.settings.base import BaseAppSettings
 
 
-class AppSettings(BaseAppSettings):
+class AppSettings(BaseSettings):
     debug: bool = False
     docs_url: str = "/docs"
     openapi_prefix: str = ""
@@ -18,9 +18,6 @@ class AppSettings(BaseAppSettings):
     version: str = "1.0.0"
 
     allowed_hosts: List[str] = ["*"]
-
-    logging_level: int = logging.INFO
-    loggers: Tuple[str, str] = ("uvicorn.asgi", "uvicorn.access")
 
     class Config:
         validate_assignment = True
@@ -35,12 +32,5 @@ class AppSettings(BaseAppSettings):
             "redoc_url": self.redoc_url,
             "title": self.title,
             "version": self.version,
+            "swagger_ui_parameters": {"persistAuthorization": True}
         }
-
-    def configure_logging(self) -> None:
-        logging.getLogger().handlers = [InterceptHandler()]
-        for logger_name in self.loggers:
-            logging_logger = logging.getLogger(logger_name)
-            logging_logger.handlers = [InterceptHandler(level=self.logging_level)]
-
-        logger.configure(handlers=[{"sink": sys.stderr, "level": self.logging_level}])
