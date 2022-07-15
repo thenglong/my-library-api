@@ -1,23 +1,33 @@
-from typing import Generic, TypeVar, List
 import math
+from typing import Generic, TypeVar, List
 
-from pydantic import Field
+from humps.main import camelize
+from pydantic import BaseModel
 from pydantic.generics import GenericModel
 
 DataT = TypeVar('DataT')
 
 
-class Pagination(GenericModel, Generic[DataT]):
-    page: int
-    item_count: int = Field(..., alias="itemCount")
-    page_count: int = Field(..., alias="pageCount")
-    take: int
-    has_next: bool = Field(..., alias="hasNext")
-    has_previous: bool = Field(..., alias="hasPrevious")
-    items: List[DataT]
-
+class CamelModel(BaseModel):
     class Config:
+        alias_generator = camelize
         allow_population_by_field_name = True
+
+
+class CamelGenericModal(GenericModel):
+    class Config:
+        alias_generator = camelize
+        allow_population_by_field_name = True
+
+
+class Pagination(CamelGenericModal, Generic[DataT]):
+    page: int
+    item_count: int
+    page_count: int
+    take: int
+    has_next: bool
+    has_previous: bool
+    items: List[DataT]
 
 
 def create_pagination(items,

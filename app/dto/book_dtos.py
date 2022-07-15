@@ -1,24 +1,20 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from app.dto.common_dtos import CamelModel
 
 
-class BaseBookDto(BaseModel):
+class BaseBookDto(CamelModel):
     title: str
     language: Optional[str]
     country: Optional[str]
-    cover_image_url: Optional[str] = Field(..., alias="coverImageUrl")
+    cover_image_url: Optional[str]
     author: Optional[str]
     description: Optional[str]
-    page_count: Optional[int] = Field(..., alias="pageCount")
-
-    class Config:
-        allow_population_by_field_name = True
+    page_count: Optional[int]
 
 
-class BookDto(BaseBookDto):
+class BookResponseDto(BaseBookDto):
     id: int
 
     class Config:
         orm_mode = True
-        allow_population_by_field_name = True

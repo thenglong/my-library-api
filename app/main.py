@@ -10,6 +10,7 @@ from firebase_admin import credentials
 from app.core.config import get_app_settings
 from app.core.database import Base
 from app.core.database import engine
+from app.middlewares.custom_server_response_header import CustomServerResponseHeader
 from app.routes import book_route, file_route
 
 # Load env
@@ -42,6 +43,8 @@ def get_application() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    application.add_middleware(CustomServerResponseHeader, server_name="")
 
     application.include_router(book_route.router)
     application.include_router(file_route.router)

@@ -6,7 +6,7 @@ authors = ["Thenglong Heng <thenglongheng2k@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fastapi = "^0.78.0"
+fastapi = "^0.79.0"
 uvicorn = {extras = ["standard"], version = "^0.18.2"}
 SQLAlchemy = "^1.4.39"
 psycopg2 = "^2.9.3"
@@ -16,6 +16,8 @@ alembic = "^1.8.1"
 firebase-admin = "^5.2.0"
 python-multipart = "^0.0.5"
 nanoid = "^2.0.0"
+pyhumps = "^3.7.2"
+humps = "^0.2.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
