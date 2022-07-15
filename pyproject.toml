@@ -28,5 +28,5 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-dev = "uvicorn app.main:app --reload"
-start = "uvicorn app.main:app"
+dev = "uvicorn app.main:app --reload --no-server-header"
+start = "uvicorn app.main:app --no-server-header"
