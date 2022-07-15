@@ -8,9 +8,13 @@ from sqlalchemy.orm import sessionmaker
 # load .env file in development environment
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = os.getenv("PG_DATABASE_URL")
+DB_URI = os.getenv("DATABASE_URL")
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+# in case for heroku postgres
+if DB_URI.startswith("postgres://"):
+    DB_URI = DB_URI.replace("postgres://", "postgresql://", 1)
+
+engine = create_engine(DB_URI, echo=True)
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 

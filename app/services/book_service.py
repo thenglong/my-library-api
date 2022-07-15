@@ -4,15 +4,15 @@ from sqlalchemy.orm.session import Session
 
 from app.dto.book_dtos import BaseBookDto
 from app.dto.common_dtos import create_pagination
-from app.models.book_models import BookModel
+from app.entities.book import Book
 
 
 def get_all(page: int, take: int, db: Session):
     offset = (page - 1) * take
-    query = db.query(BookModel)
+    query = db.query(Book)
     result = query \
-        .order_by(desc(BookModel.title)) \
-        .order_by(asc(BookModel.id)) \
+        .order_by(desc(Book.title)) \
+        .order_by(asc(Book.id)) \
         .offset(offset) \
         .limit(take) \
         .all()
@@ -24,7 +24,7 @@ def get_all(page: int, take: int, db: Session):
 
 
 def create(request: BaseBookDto, db: Session):
-    new_book = BookModel(
+    new_book = Book(
         title=request.title,
         language=request.language,
         country=request.country,
@@ -42,7 +42,7 @@ def create(request: BaseBookDto, db: Session):
 
 
 def get_by_id(book_id: int, db: Session):
-    book = db.query(BookModel).get(book_id)
+    book = db.query(Book).get(book_id)
     if not book:
         raise HTTPException(status_code=404, detail=f"Book with id {book_id} not found")
 
@@ -50,7 +50,7 @@ def get_by_id(book_id: int, db: Session):
 
 
 def update(book_id: int, request: BaseBookDto, db: Session):
-    book = db.query(BookModel).get(book_id)
+    book = db.query(Book).get(book_id)
     if not book:
         raise HTTPException(status_code=404, detail=f"Book with id {book_id} not found")
     book.title = request.title
@@ -67,7 +67,7 @@ def update(book_id: int, request: BaseBookDto, db: Session):
 
 
 def delete(book_id: int, db: Session):
-    book = db.query(BookModel).get(book_id)
+    book = db.query(Book).get(book_id)
     if not book:
         raise HTTPException(status_code=404, detail=f"Book with id {book_id} not found")
     db.delete(book)

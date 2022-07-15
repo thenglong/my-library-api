@@ -18,6 +18,7 @@ python-multipart = "^0.0.5"
 nanoid = "^2.0.0"
 pyhumps = "^3.7.2"
 humps = "^0.2.2"
+pydantic = {extras = ["email"], version = "^1.9.1"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -28,5 +29,5 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.taskipy.tasks]
-dev = "uvicorn app.main:app --reload --no-server-header"
+dev = "uvicorn app.main:app --reload"
 start = "uvicorn app.main:app --no-server-header"
