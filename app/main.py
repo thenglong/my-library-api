@@ -44,7 +44,7 @@ def get_application() -> FastAPI:
         allow_headers=["*"],
     )
 
-    application.add_middleware(CustomServerResponseHeader, server_name="")
+    application.add_middleware(CustomServerResponseHeader, server_name="just-a-python-assigment")
 
     application.include_router(book_route.router)
     application.include_router(file_route.router)
