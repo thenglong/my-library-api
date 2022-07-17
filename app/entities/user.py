@@ -1,8 +1,8 @@
-from sqlalchemy import Column, Integer, Sequence, String, ARRAY, Enum, CheckConstraint
+import sqlalchemy.dialects.postgresql as pg
+from sqlalchemy import Column, Integer, Sequence, String, CheckConstraint
 
 from app.core.enums import UserRole
 from app.entities.common import Audit
-import sqlalchemy.dialects.postgresql as pg
 
 
 class User(Audit):
