@@ -48,7 +48,7 @@ class PaginateWithSearchQueryParams(PaginateQueryParams):
 
     def get_search_query(self):
         if self.query is not None and self.query != "":
-            return "%{}%".format(self.query)
+            return "%{}%".format(self.query.strip())
         return None
 
     def get_offset(self):

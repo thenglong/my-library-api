@@ -12,7 +12,7 @@ router = APIRouter(prefix="/api/v1/books", tags=["Books"])
 @router.get("", response_model=Pagination[BookResponseDto])
 def get_paginated_book(paginate_request: PaginateWithSearchQueryParams = Depends(),
                        db: Session = Depends(get_db)):
-    return book_service.get_all(paginate_request=paginate_request, db=db)
+    return book_service.get_paginated_book(paginate_request=paginate_request, db=db)
 
 
 @router.post("", response_model=BookResponseDto, status_code=status.HTTP_201_CREATED)

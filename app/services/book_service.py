@@ -3,19 +3,24 @@ from sqlalchemy import desc, asc, or_
 from sqlalchemy.orm.session import Session
 
 from app.dto.book_dtos import BaseBookDto
-from app.dto.common_dtos import PaginateQueryParams, PaginateWithSearchQueryParams
+from app.dto.common_dtos import PaginateWithSearchQueryParams
 from app.entities.book import Book
 from app.helpers.response import create_pagination_from_paginate_params
 
 
-def get_all(paginate_request: PaginateWithSearchQueryParams, db: Session):
-    page = paginate_request.page
+def get_paginated_book(paginate_request: PaginateWithSearchQueryParams, db: Session):
     take = paginate_request.take
     search = paginate_request.get_search_query()
     offset = paginate_request.get_offset()
 
     query = db.query(Book)
 
+    if search is not None:
+        # noinspection ReturnValueFromInit,PyNoneFunctionAssignment
+        query = query.filter(or_(Book.title.ilike(search),
+                                 Book.description.ilike(search)))
+
+    # noinspection PyUnresolvedReferences
     result = query \
         .order_by(desc(Book.title)) \
         .order_by(asc(Book.id)) \
